@@ -3,30 +3,34 @@ services:
   dbpg: # Nome do nosso servico de banco de dados PostgreSQL
     image: postgres:13-alpine # Usa uma imagem oficial do PostgreSQL (versao Alpine e menor)
     environment: # Variaveis de ambiente para configurar o PostgreSQL
-      POSTGRES_DB: ${DB_NAME:-mydatabase}
+      POSTGRES_DB: ${DB_NAME:-db}
       POSTGRES_USER: ${DB_USER:-user}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
     volumes:
       - postgres_data:/var/lib/postgresql/data # Persiste os dados do PostgreSQL
     ports:
-      - "5432:5432" # Mapeia a porta 5432 do container para a 5432 do host (opcional para este exercicio, mas util para acesso externo)
+      - "5433:5432" # Mapeia a porta 5432 do container para a 5432 do host (opcional para este exercicio, mas util para acesso externo)
     networks:
       - app-network
 
   dbt:
     # restart: always
-    build: ./dbt # Instrucoes para construir a imagem do dbt
+    build:
+     context: ./dbt # Instrucoes para construir a imagem do dbt
     depends_on:
       - dbpg # Garante que o servico 'db' seja iniciado antes do 'dbt'
     environment: # Variaveis de ambiente para o dbt
-      - DB_HOST=${DB_HOST:-mydatabase}
-      - DB_PORT=${DB_PORT:-mydatabase}
-      - DB_NAME=${DB_NAME:-mydatabase}
+      - DB_HOST=dbpg
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-db}
       - DB_USER=${DB_USER:-user}
       - DB_PASSWORD=${DB_PASSWORD:-password}
       - DB_SCHEMA=${DB_SCHEMA:-public} # Esquema onde o dbt ira criar as tabelas
+    tty: true
     ports: 
       - "8080:8080" # Mapeia a porta 8080 do container para a 8080 do host (opcional, se o dbt tiver um servidor web)
+    volumes:
+      - ./dbt:/usr/app/dbt
     networks:
       - app-network
 

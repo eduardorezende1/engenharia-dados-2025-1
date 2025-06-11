@@ -31,9 +31,16 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   projeto_dbt:
-    +materialized: table
-    # Config indicated by + and applies to all files under models/example/
+    # Configuração para os nossos modelos
     staging:
+      +materialized: view
+    marts:
       +materialized: table
 
+  # Desabilitando os modelos que vêm dos pacotes
+  dbt_artifacts:
+    +enabled: false
+
+  dbt_project_evaluator:
+    +enabled: false
 
