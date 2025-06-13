@@ -1,4 +1,6 @@
 # Engenharia de dados - 2025-1
+## Eduardo José Rezende Cardozo 19.00100-2
+## Luca Zanfelici Fanucchi 19.00228-9
 
 # Containers
 ## dbt_compose e dbt
