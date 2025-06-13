@@ -63,4 +63,38 @@ O pipeline segue a arquitetura **ELT (Extract, Load, Transform)**, processando d
     1.  `agg_movies_by_year`: Conta a quantidade total de filmes lançados por ano, joga com a nota média dos filmes e a menor e maior nota do ano.
 
 ---
+## 1. Execução do Pipeline
 
+Com o Docker Desktop em execução, utilize os seguintes comandos no terminal, a partir da pasta raiz do projeto:
+
+```bash
+# 1. Construir e iniciar todos os containers em segundo plano
+docker-compose up -d --build
+
+# 2. Entrar no container do dbt para executar os comandos de transformação
+docker-compose exec dbt bash
+```
+
+## 2. Execução dos Comandos dbt
+
+Uma vez dentro do container do dbt, execute os comandos na seguinte ordem:
+
+```bash
+# 3.1. Carrega os dados do CSV para a camada Bronze
+dbt seed
+
+# 3.2. Executa todas as transformações para criar as camadas Silver e Gold
+dbt run
+```
+
+## 3. Verificação
+
+Após a execução bem-sucedida, os dados podem ser verificados conectando-se ao banco de dados PostgreSQL com qualquer cliente de SQL (DBeaver, Pgadmin, etc), utilizando as credenciais definidas no arquivo `.env`.
+
+- **Host:** `localhost`
+- **Porta:** `5433`
+- **Banco de Dados:** `db`
+- **Usuário:** `user`
+- **Senha:** `password`
+
+As tabelas e views estarão disponíveis nos schemas `public` e `marts`.
