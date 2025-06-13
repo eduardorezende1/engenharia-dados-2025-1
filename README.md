@@ -40,12 +40,10 @@ O pipeline segue a arquitetura **ELT (Extract, Load, Transform)**, processando d
 
 ### Camada Bronze: Carga dos Dados Brutos
 
-* **O que faz:** Ingestão dos dados crus.
 * **Como funciona:** Nesta fase, os dados são uma cópia exata do arquivo original, com todos os seus problemas de formatação e qualidade.
 
 ### Camada Silver: Limpeza e Padronização
 
-* **O que faz:** Transforma os dados brutos em um conjunto de dados limpo, padronizado e confiável.
 * **Como funciona:** O modelo `stg_movies.sql` lê os dados da camada Bronze e aplica uma série de transformações para criar a view `stg_movies`.
 
 #### Transformações Realizadas na Camada Silver:
@@ -57,7 +55,6 @@ O pipeline segue a arquitetura **ELT (Extract, Load, Transform)**, processando d
 
 ### Camada Gold: Agregação para Análise
 
-* **O que faz:** Cria modelos de dados agregados, prontos para o consumo por ferramentas de análise ou dashboards.
 * **Como funciona:** Os modelos na pasta `marts` leem os dados já limpos da camada Silver (`stg_movies`) para criar tabelas de análise.
 * **Modelo Criado:**
     1.  `agg_movies_by_year`: Conta a quantidade total de filmes lançados por ano, joga com a nota média dos filmes e a menor e maior nota do ano.
