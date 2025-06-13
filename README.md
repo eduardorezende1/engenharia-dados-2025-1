@@ -77,10 +77,10 @@ docker-compose exec dbt bash
 Uma vez dentro do container do dbt, execute os comandos na seguinte ordem:
 
 ```bash
-# 3.1. Carrega os dados do CSV para a camada Bronze
+# 2.1. Carrega os dados do CSV para a camada Bronze
 dbt seed
 
-# 3.2. Executa todas as transformações para criar as camadas Silver e Gold
+# 2.2. Executa todas as transformações para criar as camadas Silver e Gold
 dbt run
 ```
 
@@ -95,3 +95,16 @@ Após a execução bem-sucedida, os dados podem ser verificados conectando-se ao
 - **Senha:** `password`
 
 As tabelas e views estarão disponíveis nos schemas `public` e `marts`.
+
+
+## 4. Cliente SQL
+
+Os comando para se executar no cliente SQL para a visualização dos resultados são:
+
+```bash
+# 4.1. Visualização da camada silver
+SELECT * FROM public.stg_movies ORDER BY movie_year DESC LIMIT 20;
+
+# 4.2. Visualização da camada gold
+SELECT * FROM public.agg_movies_by_year;
+```
